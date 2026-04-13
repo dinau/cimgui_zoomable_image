@@ -54,21 +54,48 @@ void gui_main(Window *window) {
     if (showDemoWindow)
       igShowDemoWindow(&showDemoWindow);
 
-    //-----------------------
-    // show a simple window
-    //-----------------------
-    igBegin("ImGui Zoomable Image Demo in C " ICON_FA_DOG, NULL, 0);
-      igText("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / pio->Framerate, pio->Framerate);
-    igEnd();
+    ImVec2_c frameSize =   igGetMainViewport()->Size;
+    ImVec2_c imageWindowPos    = (ImVec2_c){frameSize.x * 0.1f, frameSize.y * 0.1f};
+    ImVec2_c imageWindowSize   = (ImVec2_c){frameSize.x * 0.5f, frameSize.y * 0.5f};
+    ImVec2_c controlsWindowPos = (ImVec2_c){frameSize.x * 0.7f, frameSize.y * 0.1f};
 
     //---------------------------------
     // imgui_zoomable_image demo in C
     //---------------------------------
+    igSetNextWindowPos(imageWindowPos, ImGuiCond_Once, (ImVec2_c){0, 0});
+    igSetNextWindowSize(imageWindowSize, ImGuiCond_Once);
     zoomState.textureSize = (ImVec2_c){textureWidth, textureHeight};
-    igBegin("ImGui Zoomable Image", NULL, 0);
+    igBegin("ImGui Zoomable Image demo in C " ICON_FA_DOG, NULL, 0);
       const ImVec2_c displaySize = igGetContentRegionAvail();
       ImGuiImage_Zoomable(textureRef, &displaySize, &zoomState);
     igEnd();
+
+    //-------------------------------------------------------------
+    // Create a window displaying information about the test image
+    //-------------------------------------------------------------
+    igSetNextWindowPos(controlsWindowPos, ImGuiCond_Once, (ImVec2_c){0, 0});
+    {
+      igBegin("Controls Window", NULL, 0);
+      igCheckbox("Enable Zoom/Pan", &zoomState.zoomPanEnabled);
+      igCheckbox("Maintain Aspect Ratio", &zoomState.maintainAspectRatio);
+      if (igButton("Reset Zoom/Pan", (ImVec2_c){0, 0}))
+      {
+        zoomState.zoomLevel = 1.0f;
+        zoomState.panOffset = (ImVec2_c){0.0f, 0.0f};
+      }
+      igSeparator();
+      igText("Texture Size: %zu x %zu", textureWidth, textureHeight);
+      igText("Display Size: %.0f x %.0f", displaySize.x, displaySize.y);
+      igText("Zoom Level: %.2f%%", zoomState.zoomLevel * 100.0f);
+      igText("Pan Offset: (%.2f, %.2f)", zoomState.panOffset.x * textureWidth,
+                                              zoomState.panOffset.y * textureHeight);
+      igText("Mouse Pos: (%.2f, %.2f)", zoomState.mousePosition.x,
+                                             zoomState.mousePosition.y);
+      igSeparator();
+      igText("Application average %.3f ms/frame (%.1f FPS)",
+        1000.0f / pio->Framerate, pio->Framerate);
+      igEnd();
+    }
 
     //--------
     // render
