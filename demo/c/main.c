@@ -37,7 +37,7 @@ void gui_main(Window *window) {
   //------------
   // Load image
   //------------
-  const char* ImageName = "./resources/dinosaurs_paradise.png";
+  const char* ImageName = "./resources/dinosaurs_paradise.jpg";
   unsigned int textureId;
   int32_t  textureWidth  = 0;
   int32_t  textureHeight = 0;
