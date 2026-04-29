@@ -51,11 +51,6 @@ LINUX_GL_LIBS = -lGL
 CXXFLAGS += -g -Wall -Wformat
 LIBS =
 
-CFLAGS_EX += -DT_IM_TEXTURE_REF=ImTextureRef
-CFLAGS_EX += -DT_IM_VEC2=ImVec2 -DT_IM_VEC4=ImVec4
-CXXFLAGS_EX += -DT_IM_TEXTURE_REF=ImTextureRef
-CXXFLAGS_EX += -DT_IM_VEC2=ImVec2 -DT_IM_VEC4=ImVec4
-
 .PHONY: $(BUILD_DIR) clean run
 
 ##---------------------------------------------------------------------
@@ -114,11 +109,11 @@ $(BUILD_DIR):
 
 $(BUILD_DIR)/%.o:%.c Makefile
 	@echo [$(CC) ] $(notdir $<)
-	@$(CC) $(CFLAGS) $(CFLAGS_EX) -c -o $@ $<
+	@$(CC) $(CFLAGS) -c -o $@ $<
 
 $(BUILD_DIR)/%.o:%.cpp Makefile
 	@echo [$(CXX)] $(notdir $<)
-	@$(CXX) $(CXXFLAGS) $(CXXFLAGS_EX) -c -o $@ $<
+	@$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 $(EXE): $(OBJS)
 	@$(CXX) -o $@ $^ $(CXXFLAGS) $(LIBS)
