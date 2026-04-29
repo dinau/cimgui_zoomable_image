@@ -1,18 +1,10 @@
-#include <float.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <strings.h>
 
-#ifdef __cplusplus
-#  include "imgui.h"
-#else
-#define CIMGUI_DEFINE_ENUMS_AND_STRUCTS
-#  include "cimgui.h"
-#endif
+#include "imgui.h"
 #include "utils.h"
 #include "setupFonts.h"
-
-#define ImGui_GetIO igGetIO
 
 #define MAX_PATH  2048
 const char* IconFontPath = "../utils/fonticon/fa6/fa-solid-900.ttf";

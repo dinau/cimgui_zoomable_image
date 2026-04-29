@@ -6,8 +6,20 @@
 #  include "imgui_impl_opengl3.h"
 extern "C" {
 #else
-   #define CIMGUI_DEFINE_ENUMS_AND_STRUCTS
-#  include "cimgui.h"
+# ifdef DCIMGUI
+#   include "dcimgui.h"
+# else
+#   define CIMGUI_DEFINE_ENUMS_AND_STRUCTS
+#   include "cimgui.h"
+
+#   ifdef IMGUI_HAS_IMSTR
+#   define igBegin igBegin_Str
+#   define igCheckbox igCheckbox_Str
+#   define igButton igButton_Str
+#endif
+
+#define igGetIO igGetIO_Nil
+#  endif
 #endif
 
 #include <GLFW/glfw3.h>
@@ -16,15 +28,6 @@ extern "C" {
 #include <windows.h>
 #endif
 #include <GL/gl.h>
-
-#ifdef IMGUI_HAS_IMSTR
-#define igBegin igBegin_Str
-#define igCheckbox igCheckbox_Str
-#define igButton igButton_Str
-#endif
-
-#define igGetIO igGetIO_Nil
-
 
 #include "setupFonts.h"
 #include <stdlib.h>
